@@ -10,6 +10,10 @@ WebAssembly is a new type of code that can be run in modern web browsers — it 
 
 演示了，浏览器端和 Node.js 端调用 WebAssembly 的方法。
 
+## 使用
+
+访问：`wasm-rsa.vercel.app` 或者 `wasm-rsa.vercel.app/api/rsa`
+
 ## 致谢
 
 感谢 [rustwasm](https://rustwasm.github.io/docs/book/) 提供的教程。
