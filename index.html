@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, {
+        encrypt,
+      } from 'https://s1.hdslb.com/bfs/static/jinkela/long/wasm/wasm_ras.js';
+      function convertToHex(str) {
+        return str
+          .split('')
+          .reduce((i, t) => i + t.charCodeAt(0).toString(16), '');
+      }
+      init().then((wasm) => {
+        console.log(wasm);
+        console.log('初始化成功');
+      });
+      function getHash(timestamp) {
+        const correspondPath = encrypt({
+          data: convertToHex(`refresh_${timestamp}`),
+          digest: 'SHA256',
+        });
+        return correspondPath;
+      }
+      // 获取 query 参数
+      function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split('=');
+          if (pair[0] == variable) {
+            return pair[1];
+          }
+        }
+        return false;
+      }
+      window.onload = function () {
+        const timestamp =
+          getQueryVariable('timestamp') || getQueryVariable('t');
+        const p = document.createElement('p');
+        if (!timestamp) {
+          p.innerText = '请通过 query 传入 timestamp 或者 t';
+          window.document.body.appendChild(p);
+          return;
+        }
+        const hash = getHash(timestamp);
+        p.innerText = hash;
+        window.document.body.appendChild(p);
+      };
+    </script>
+  </body>
+</html>
